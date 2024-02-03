@@ -10,6 +10,33 @@ class BottomNavBar extends StatelessWidget {
 
   const BottomNavBar({Key? key}) : super(key: key);
 
+  void _showRightSheet(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: Row(
+            children: [
+              SizedBox(width: MediaQuery.of(context).size.width - 220),
+              const Expanded(
+                // This Expanded fills the remaining width
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment
+                      .center, // Centers vertically in the available column space
+                  children: [
+                    LayersRightSheet(),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   void _onNavigationItemSelected(int index, BuildContext context) {
     if (index == 0) {
       showModalBottomSheet(
@@ -19,6 +46,9 @@ class BottomNavBar extends StatelessWidget {
           child: ToolsBottomSheet(),
         ),
       );
+    }
+    if (index == 3) {
+      _showRightSheet(context);
     }
   }
 

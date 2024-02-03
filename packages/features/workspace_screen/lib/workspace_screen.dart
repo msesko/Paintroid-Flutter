@@ -7,6 +7,10 @@ export 'src/components/checkerboard_pattern.dart';
 export 'src/components/command_painter.dart';
 export 'src/components/drawing_canvas.dart';
 export 'src/components/exit_fullscreen_button.dart';
+
+export 'src/components/layer_controls.dart';
+export 'src/components/layers_right_sheet.dart';
+
 export 'src/components/overflow_menu.dart';
 export 'src/components/tool_button.dart';
 export 'src/components/tool_options.dart';
