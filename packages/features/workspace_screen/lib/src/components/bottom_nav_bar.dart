@@ -21,10 +21,8 @@ class BottomNavBar extends StatelessWidget {
             children: [
               SizedBox(width: MediaQuery.of(context).size.width - 220),
               const Expanded(
-                // This Expanded fills the remaining width
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment
-                      .center, // Centers vertically in the available column space
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     LayersRightSheet(),
                   ],

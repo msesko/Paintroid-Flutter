@@ -15,6 +15,8 @@ class LayersRightSheet extends HookConsumerWidget {
     final selectedLayer = useState<int>(0);
     final layerCounter = useState<int>(0);
 
+    final dragDownCount = useState<int>(0);
+
     void addLayer() {
       layerCounter.value++;
       layers.value = [...layers.value, layerCounter.value];
@@ -41,6 +43,23 @@ class LayersRightSheet extends HookConsumerWidget {
         selectedLayer.value = 0;
         layerCounter.value = 0;
       }
+    }
+
+    void switchLayers(int index1, int index2) {
+      if (index1 < 0 ||
+          index2 < 0 ||
+          index1 >= layers.value.length ||
+          index2 >= layers.value.length) {
+        return;
+      }
+
+      List<int> newLayers = List<int>.from(layers.value);
+
+      int temp = newLayers[index1];
+      newLayers[index1] = newLayers[index2];
+      newLayers[index2] = temp;
+
+      layers.value = List<int>.from(newLayers);
     }
 
     return Column(
@@ -140,9 +159,22 @@ class LayersRightSheet extends HookConsumerWidget {
                                 layers.value[index] == selectedLayer.value,
                             isFirst: layers.value[index] == layers.value[0],
                             isLast: layers.value[index] == layers.value.last,
-                            clickSelectLayer: () {
+                            onSelectLayer: () {
                               selectedLayer.value = layers.value[index];
                             },
+                            onDragUpwards: () {
+                              print("test up");
+                              switchLayers(index, index - 1);
+                            },
+                            onDragDownwards: () {
+                              final int relativeIndex =
+                                  index + dragDownCount.value;
+                              if (relativeIndex < layers.value.length - 1) {
+                                switchLayers(relativeIndex, relativeIndex + 1);
+                                dragDownCount.value++;
+                              }
+                            },
+                            dragDownCount: dragDownCount,
                           ),
                         ],
                       ),
