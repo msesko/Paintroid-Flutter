@@ -11,7 +11,7 @@ class LayerControls extends HookConsumerWidget {
   final VoidCallback onSelectLayer;
   final Function onDragUpwards;
   final Function onDragDownwards;
-  final dragDownCount;
+  final ValueNotifier<int> relativeDragCount;
 
   const LayerControls({
     super.key,
@@ -22,19 +22,20 @@ class LayerControls extends HookConsumerWidget {
     required this.onSelectLayer,
     required this.onDragUpwards,
     required this.onDragDownwards,
-    required this.dragDownCount,
+    required this.relativeDragCount,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dragStartOffset = useState(Offset.zero);
+    const layerControlsHeight = 250 - 50 - 8 - 15;
 
     return Row(
       children: [
         const SizedBox(width: 5),
         Container(
           width: 220 - 5,
-          height: 250 - 50 - 8 - 15,
+          height: layerControlsHeight.toDouble(),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
               topLeft: isFirst
@@ -63,19 +64,18 @@ class LayerControls extends HookConsumerWidget {
                         onVerticalDragUpdate: (details) {
                           final dragDistance = dragStartOffset.value.dy -
                               details.globalPosition.dy;
-                          print(dragDistance);
 
-                          if (dragDistance > 100) {
+                          if (dragDistance > layerControlsHeight) {
                             onDragUpwards.call();
                             dragStartOffset.value = details.globalPosition;
                           }
-                          if (dragDistance < -150) {
+                          if (dragDistance < -layerControlsHeight) {
                             onDragDownwards.call();
                             dragStartOffset.value = details.globalPosition;
                           }
                         },
                         onVerticalDragEnd: (details) {
-                          dragDownCount.value = 0;
+                          relativeDragCount.value = 0;
                         },
                         child: Icon(
                           Icons.menu,

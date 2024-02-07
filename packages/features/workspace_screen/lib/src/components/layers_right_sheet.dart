@@ -15,7 +15,7 @@ class LayersRightSheet extends HookConsumerWidget {
     final selectedLayer = useState<int>(0);
     final layerCounter = useState<int>(0);
 
-    final dragDownCount = useState<int>(0);
+    final relativeDragCount = useState<int>(0);
 
     void addLayer() {
       layerCounter.value++;
@@ -163,18 +163,22 @@ class LayersRightSheet extends HookConsumerWidget {
                               selectedLayer.value = layers.value[index];
                             },
                             onDragUpwards: () {
-                              print("test up");
-                              switchLayers(index, index - 1);
+                              final int relativeIndex =
+                                  index + relativeDragCount.value;
+                              if (relativeIndex < layers.value.length) {
+                                switchLayers(relativeIndex, relativeIndex - 1);
+                                relativeDragCount.value--;
+                              }
                             },
                             onDragDownwards: () {
                               final int relativeIndex =
-                                  index + dragDownCount.value;
+                                  index + relativeDragCount.value;
                               if (relativeIndex < layers.value.length - 1) {
                                 switchLayers(relativeIndex, relativeIndex + 1);
-                                dragDownCount.value++;
+                                relativeDragCount.value++;
                               }
                             },
-                            dragDownCount: dragDownCount,
+                            relativeDragCount: relativeDragCount,
                           ),
                         ],
                       ),
