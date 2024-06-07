@@ -7,7 +7,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Project imports:
 import 'package:paintroid/ui/pages/workspace_page/components/layers/square_selection_button.dart';
-
 import 'package:paintroid/ui/theme/data/paintroid_theme.dart';
 
 class LayerControls extends HookConsumerWidget {
@@ -102,7 +101,8 @@ class LayerControls extends HookConsumerWidget {
               const SizedBox(width: 20.0),
               GestureDetector(
                 onTap: () => onSelectLayer.call(),
-                child: SizedBox(
+                child: Container(
+                  color: PaintroidTheme.of(context).onInverseSurfaceColor,
                   height: 50,
                   width: 50,
                   child: Center(child: Text(name)),
