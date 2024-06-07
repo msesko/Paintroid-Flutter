@@ -12,6 +12,7 @@ import 'package:paintroid/core/providers/state/tools/toolbox/toolbox_state_provi
 import 'package:paintroid/core/tools/tool_data.dart';
 import 'package:paintroid/ui/pages/workspace_page/components/bottom_bar/bottom_nav_bar_items.dart';
 import 'package:paintroid/ui/pages/workspace_page/components/bottom_bar/tools/tools_bottom_sheet.dart';
+import 'package:paintroid/ui/pages/workspace_page/components/layers/layers_right_sheet.dart';
 import 'package:paintroid/ui/shared/bottom_nav_bar_icon.dart';
 import 'package:paintroid/ui/theme/theme.dart';
 
@@ -80,6 +81,9 @@ void _onNavigationItemSelected(int index, BuildContext context, WidgetRef ref) {
     case BottomNavBarItem.TOOL_OPTIONS:
       _handleToolOptionsVisibility(ref);
       break;
+    case BottomNavBarItem.LAYERS:
+      _showRightSheet(context);
+      break;
     default:
       return;
   }
@@ -98,4 +102,29 @@ void _showToolBottomSheet(BuildContext context) {
 
 void _handleToolOptionsVisibility(WidgetRef ref) {
   ref.read(toolOptionsVisibilityStateProvider.notifier).toggleVisibility();
+}
+
+void _showRightSheet(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: true,
+    builder: (BuildContext context) {
+      return SizedBox(
+        height: MediaQuery.of(context).size.height,
+        child: Row(
+          children: [
+            SizedBox(width: MediaQuery.of(context).size.width - 220),
+            const Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  LayersRightSheet(),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
 }
